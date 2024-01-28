@@ -23,4 +23,26 @@ class Flight(models.Model):
     duration = models.IntegerField()
 
     def __str__(self):
-        return f"{self.id}: {self.origin} to {self.duration}"
+        return f"{self.id}: {self.origin} to {self.destination}"
+
+# create another model for a new table to represent passengers
+class Passenger(models.Model):
+    # column for first name
+    first = models.CharField(max_length=64)
+    # column for surname
+    last = models.CharField(max_length=64)
+    
+    # passengers have a many-to-many relationship with flights, for eg:
+    # a flight could have multiple passengers or
+    # a passenger could be on multiple flights and
+    # ultimately we need an additional table to keep track of this
+    
+    # so we can say that every passenger has flights associated with them which
+    # are which are a models.ManyToManyField with Flight
+    flights= models.ManyToManyField(Flight, blank=True, related_name="passenger")
+    # blank=True caters for the possibility that a passenger has no flight or not been
+    # registered for any flights at all
+    # related_name is to link Flight to Passenger class
+    
+    def __str__(self):
+        return f"{self.first} {self.last}"
