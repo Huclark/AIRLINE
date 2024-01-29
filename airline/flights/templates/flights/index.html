@@ -7,10 +7,23 @@
             <li>
                 {% comment %} flight is an instance of Flight which takes an argument of id {% endcomment %}
                 {% comment %} this is why flight.id is in the href {% endcomment %}
-                <a href="{% url 'flight' flight.id%}">
+                <a href="{% url 'flight' flight.id %}">
                     Flight {{ flight.id }}: {{flight.origin}} to {{flight.destination}}
                 </a>
             </li>
         {% endfor %}
     </ul>
+
+    <h2>Add Passenger</h2>
+    {{ flight.id }}
+
+    <form action="{% url 'book' flight.id %}" method="post">
+        {% csrf_token %}
+        <select name="passenger">
+            {% for passenger in non_passengers %}
+                <option value="{{ passenger.id }}">{{ passenger }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit">
+    </form>
 {% endblock %}
